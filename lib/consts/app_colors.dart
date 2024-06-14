@@ -16,6 +16,7 @@ class AppColor {
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
   static const Color grey = Color(0xFFE5E5E5);
+  static const Color cardcolordark = Color(0xFF212529);
   static const Color lightGrey = Color(0xFFF5F5F5);
   static const Color lightScaffoldColor = Colors.white;
   static const Color lightPrimary = Color(0xFF181059);
