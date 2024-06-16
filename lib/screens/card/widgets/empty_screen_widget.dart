@@ -18,9 +18,7 @@ class EmptyScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 100,
-        ),
+       
         Image.asset(
           img,
           height: 200,
@@ -46,8 +44,9 @@ class EmptyScreen extends StatelessWidget {
         SizedBox(
           height: 150,
         ),
-        GestureDetector(
-          onTap: () {},
+        InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: (){},
           child: Container(
             height: 60,
             width: 200,

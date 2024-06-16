@@ -1,6 +1,10 @@
+import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:e_commerce_app/consts/styles.dart';
 import 'package:e_commerce_app/providers/theme_provider.dart';
+import 'package:e_commerce_app/screens/profile/widgets/log_out_alert.dart';
+import 'package:e_commerce_app/screens/profile/widgets/profile_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -55,7 +59,9 @@ class ProfileScreen extends StatelessWidget {
               'assets/images/bag/wishlist_svg.png',
               height: 30,
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, Routes.favorites);
+            },
           ),
           const SizedBox(height: 20),
           ListTile(
@@ -70,7 +76,9 @@ class ProfileScreen extends StatelessWidget {
               'assets/images/profile/recent.png',
               height: 30,
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, Routes.viewed);
+            },
           ),
           const SizedBox(height: 20),
           ListTile(
@@ -98,58 +106,18 @@ class ProfileScreen extends StatelessWidget {
               Icons.logout,
               color: Colors.red,
             ),
-            onTap: () {},
+            onTap: ()async {
+          await  LogourAlert(context);
+          Navigator.pushNamed(context, Routes.login);
+              
+            },
           ),
         ],
       ),
     );
   }
+
+ 
 }
 
-class Profileinfo extends StatelessWidget {
-  const Profileinfo({
-    super.key,
-    required this.themeProvider,
-  });
 
-  final ThemeProvider themeProvider;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10),
-      child: Row(
-        children: [
-          Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              shape: BoxShape.circle,
-              image: const DecorationImage(
-                  image: AssetImage('assets/images/bag/shopping_cart.png')),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'hazema amr',
-                style: themeProvider.Isdark_theme
-                    ? TextStyles.font16WhiteBold
-                    : TextStyles.font16BlackBold,
-              ),
-              Text(
-                'hazema amr@gmail.com',
-                style: themeProvider.Isdark_theme
-                    ? TextStyles.font14GrayRegular
-                    : TextStyles.font14blackRegular,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}

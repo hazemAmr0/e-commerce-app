@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
 
-  late TextEditingController searchController;
+  late TextEditingController searchController=  TextEditingController();
 
   @override
 
@@ -28,7 +28,11 @@ class SearchScreen extends StatelessWidget {
        Search_Bar(searchController: searchController),
 Expanded(
   child: DynamicHeightGridView(builder: (context,index){
-    return ItemCard();
+    return ItemCard(
+      img: 'assets/images/shoes.png',
+      title: 'Nike shoes',
+      price: '\$120',
+    );
   }, itemCount: 8, crossAxisCount: 2),
 )
           ],
