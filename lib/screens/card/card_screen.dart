@@ -1,4 +1,3 @@
-import 'package:e_commerce_app/consts/app_colors.dart';
 import 'package:e_commerce_app/screens/card/widgets/empty_screen_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

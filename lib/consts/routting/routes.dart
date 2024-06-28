@@ -3,6 +3,7 @@ class Routes {
   static const String rootScreen = '/root';
   static const String favorites = '/favorites';
   static const String login='/login'; 
+  static const String signUp='/signup';
   static const String viewed = '/viewed';
 
 }

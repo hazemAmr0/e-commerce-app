@@ -1,6 +1,7 @@
- import 'package:flutter/material.dart';
+ import 'package:e_commerce_app/consts/routting/routes.dart';
+import 'package:flutter/material.dart';
 
-void showSuccessDialog(BuildContext context) {
+ void showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -34,7 +35,8 @@ void showSuccessDialog(BuildContext context) {
               SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                 // Navigator.of(context).pop();
+                  Navigator.pushNamed(context, Routes.rootScreen);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
@@ -50,3 +52,4 @@ void showSuccessDialog(BuildContext context) {
       },
     );
   }
+

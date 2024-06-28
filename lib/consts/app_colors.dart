@@ -24,5 +24,7 @@ class AppColor {
   static const Color darkScaffoldColor = Color.fromARGB(255, 9, 3, 27);
   static const Color darkPrimary = Color.fromARGB(255, 94, 75, 236);
   static const Color favoritecolordark =Color(0xFF0092834);
+  static const Color backGroundForm=Color(0xFF1a2a4d);
+  static const Color loginButtonColor = Color(0xFF2d54ee);
 
 }

@@ -2,6 +2,7 @@
 import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:e_commerce_app/root_scree.dart';
 import 'package:e_commerce_app/screens/Login_and_sign_up/login_screen.dart';
+import 'package:e_commerce_app/screens/Login_and_sign_up/signin_Screen.dart';
 import 'package:e_commerce_app/screens/producdetails/product_details.dart';
 import 'package:e_commerce_app/screens/profile/sections/favoriets.dart';
 import 'package:e_commerce_app/screens/profile/sections/viewed.dart';
@@ -19,7 +20,9 @@ class AppRouter {
           case Routes.viewed:
         return MaterialPageRoute(builder: (_) => const Viewed());
          case Routes.login:
-        return MaterialPageRoute(builder: (_) => const loginScreen());
+        return MaterialPageRoute(builder: (_) =>  LoginScreen());
+              case Routes.signUp:
+        return MaterialPageRoute(builder: (_) => SignUp());
 
 
       // Add other cases as needed
