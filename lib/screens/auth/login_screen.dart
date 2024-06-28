@@ -1,7 +1,7 @@
 
 import 'package:e_commerce_app/consts/routting/routes.dart';
-import 'package:e_commerce_app/screens/Login_and_sign_up/widgets/build_top_section.dart';
-import 'package:e_commerce_app/screens/Login_and_sign_up/widgets/my_validators.dart';
+import 'package:e_commerce_app/screens/auth/widgets/build_top_section.dart';
+import 'package:e_commerce_app/screens/auth/widgets/my_validators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -29,15 +29,11 @@ class _LoginScreenState extends State<LoginScreen> {
   bool obscureText = true;
 
 @override
-  void initState() {
+void initState() {
+    // TODO: implement initState
     super.initState();
-    _emailController.addListener(() {
-      setState(() {});
-    });
-    _passwordController.addListener(() {
-      setState(() {});
-    });
   }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -62,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Positioned(
             bottom: 0,
             child: SizedBox(
-              height: MediaQuery.of(context).size.height * 1.24,
+              height: MediaQuery.of(context).size.height * 1.28,
               width: MediaQuery.of(context).size.width,
               child: Image.asset('assets/images/c3.png', fit: BoxFit.cover),
             ),
@@ -70,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Positioned(
             bottom: 0,
             child: SizedBox(
-              height: MediaQuery.of(context).size.height * 1.24,
+              height: MediaQuery.of(context).size.height * 1.35,
               width: MediaQuery.of(context).size.width,
               child: Image.asset('assets/images/c2.png', fit: BoxFit.cover),
             ),
@@ -80,13 +76,13 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Stack(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 1.36,
+                  height: MediaQuery.of(context).size.height * 1.44,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.transparent,
                   child: Image.asset('assets/images/c1.png', fit: BoxFit.cover),
                 ),
                 Positioned(
-                    bottom: 50,
+                    bottom: 30,
                     left: 40,
                     right: 40,
                     child: Form(
@@ -178,7 +174,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             //  _loginFct();
                             },
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 20),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, Routes.forgetPassword);
+                            },
+                            focusColor: Colors.blue,
+                            borderRadius: BorderRadius.circular(5),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text('Forgot Password?',style: TextStyle(color: Colors.blue),))),
+                          const SizedBox(height: 30),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -210,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 25),
                           Align(
                             alignment: Alignment.center,
                             child: GestureDetector(

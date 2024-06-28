@@ -1,8 +1,9 @@
 
 import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:e_commerce_app/root_scree.dart';
-import 'package:e_commerce_app/screens/Login_and_sign_up/login_screen.dart';
-import 'package:e_commerce_app/screens/Login_and_sign_up/signin_Screen.dart';
+import 'package:e_commerce_app/screens/auth/forget_password.dart';
+import 'package:e_commerce_app/screens/auth/login_screen.dart';
+import 'package:e_commerce_app/screens/auth/signin_Screen.dart';
 import 'package:e_commerce_app/screens/producdetails/product_details.dart';
 import 'package:e_commerce_app/screens/profile/sections/favoriets.dart';
 import 'package:e_commerce_app/screens/profile/sections/viewed.dart';
@@ -23,6 +24,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) =>  LoginScreen());
               case Routes.signUp:
         return MaterialPageRoute(builder: (_) => SignUp());
+        case Routes.forgetPassword:
+        return MaterialPageRoute(builder: (_) => ForgetPassword());
 
 
       // Add other cases as needed

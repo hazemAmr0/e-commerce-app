@@ -1,4 +1,4 @@
-import 'package:e_commerce_app/screens/Login_and_sign_up/widgets/build_back_button.dart';
+import 'package:e_commerce_app/screens/auth/widgets/build_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 class buildTopSection extends StatelessWidget {

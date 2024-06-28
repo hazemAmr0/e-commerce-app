@@ -1,9 +1,9 @@
 import 'package:e_commerce_app/consts/app_colors.dart';
 import 'package:e_commerce_app/consts/choose_image_dialog.dart';
 import 'package:e_commerce_app/consts/routting/routes.dart';
-import 'package:e_commerce_app/screens/Login_and_sign_up/widgets/build_top_section.dart';
-import 'package:e_commerce_app/screens/Login_and_sign_up/widgets/my_validators.dart';
-import 'package:e_commerce_app/screens/Login_and_sign_up/widgets/pic_image.dart';
+import 'package:e_commerce_app/screens/auth/widgets/build_top_section.dart';
+import 'package:e_commerce_app/screens/auth/widgets/my_validators.dart';
+import 'package:e_commerce_app/screens/auth/widgets/pic_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -104,6 +104,7 @@ _pickedImage= await _picker.pickImage(source: ImageSource.camera);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white,
       body: Stack(
         children: [
           buildTopSection(context: context, title: 'Sign Up'),
