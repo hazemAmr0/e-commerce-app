@@ -1,27 +1,41 @@
 import 'package:e_commerce_app/consts/app_colors.dart';
 import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:e_commerce_app/consts/seccess_alertdialog.dart';
+import 'package:e_commerce_app/providers/product_provider.dart';
 import 'package:e_commerce_app/providers/theme_provider.dart';
+import 'package:e_commerce_app/screens/producdetails/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemCard extends StatelessWidget {
-  ItemCard({this.img, this.title, this.price});
-String? img;
-String? title;
-String? price;
+  ItemCard({ required this.productId});
 
+  final String productId;
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+     final themeProvider = Provider.of<ThemeProvider>(context);
+    final productProvider = Provider.of<ProductProvider>(context);
+    final getCurrProduct = productProvider.productsById(productId);
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: () {
-        Navigator.pushNamed(context, Routes.productDetails);
+        print('Product Id: $productId');
+        print('Product Image: ${getCurrProduct?.productImage}');
+        print('Product Title: ${getCurrProduct?.productTitle}');
+        print('Product Price: ${getCurrProduct?.productPrice}');
+        print('Product Description: ${getCurrProduct?.productDescription}');
+
+     Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ProductDetails(productId: productId ),
+          ),
+        );
       },
-      child: Padding(
+      child:getCurrProduct==null? CircularProgressIndicator(): Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           width: 200.w,
@@ -54,10 +68,12 @@ String? price;
                           : Colors.blue[50],
                     ),
                     child: Center(
-                      child: Image.asset(
-                        img!,
+                      child: Image.network(
+                        getCurrProduct.productImage ?? '',
                         height: 100,
-                      ),
+                        width: 100,
+                        fit: BoxFit.cover,
+                      )
                     ),
                   ),
                   Positioned(
@@ -76,7 +92,9 @@ String? price;
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title!,
+                      getCurrProduct.productTitle ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.grey[500],
                         fontSize: 16,
@@ -85,7 +103,7 @@ String? price;
                     ),
                     SizedBox(height: 5.h),
                     Text(
-                      price!,
+                      getCurrProduct.productPrice ?? '',
                       style: TextStyle(
                         fontSize: 16.sp,
                         color: Colors.blue,

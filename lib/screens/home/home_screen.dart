@@ -65,9 +65,7 @@ class HomeScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(), // Added physics
                 builder: (context, index) {
                   return ItemCard(
-                    img: 'assets/images/shoes.png',
-                    title: 'Nike shoes',
-                    price: '\$120',
+                    productId: 'iphone14-128gb-black',
                   );
                 },
               ),

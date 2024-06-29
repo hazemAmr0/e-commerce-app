@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/consts/app_colors.dart';
 import 'package:e_commerce_app/providers/theme_provider.dart';
+import 'package:e_commerce_app/screens/search/search_scree.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,14 +16,17 @@ class CategoriesCard extends StatelessWidget {
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.blue,
-          backgroundColor:themeProvider.Isdark_theme ? AppColor.cardcolordark:Colors.white,
+          backgroundColor: themeProvider.Isdark_theme
+              ? AppColor.cardcolordark
+              : Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
           elevation: 5.0,
         ),
         onPressed: () {
-          // Action when button is pressed
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => SearchScreen(categoryName: title ,)));
         },
         icon: Image.asset(
           img!, // Replace 'path/to/your/image.png' with the actual path to your image asset

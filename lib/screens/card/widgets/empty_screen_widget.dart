@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmptyScreen extends StatelessWidget {
   const EmptyScreen({
@@ -18,7 +20,6 @@ class EmptyScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-       
         Image.asset(
           img,
           height: 200,
@@ -45,25 +46,17 @@ class EmptyScreen extends StatelessWidget {
           height: 150,
         ),
         InkWell(
-          borderRadius: BorderRadius.circular(10),
-          onTap: (){},
-          child: Container(
-            height: 60,
-            width: 200,
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-                child: Text(
-              'Go to Shopping',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+            borderRadius: BorderRadius.circular(10),
+            onTap: () {},
+            child: SizedBox(
+              width: 300.w,
+              child: TextButton.icon(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 1, 160, 54)),
+                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                  ),
+                  onPressed: (){}, icon: Icon(IconlyLight.buy), label: Text('Shop Now')),
             )),
-          ),
-        ),
       ],
     );
   }

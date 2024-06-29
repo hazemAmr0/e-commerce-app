@@ -5,9 +5,9 @@ class Categories{
     'Cosmetics',
     'Electronics',
     'Fashion',
-    'Mobiles',
+    'phones',
     'Watch',
-    'PC',
+    'Laptops',
     'Shoes',
   ];
 static List<String> categoriesImage = [
