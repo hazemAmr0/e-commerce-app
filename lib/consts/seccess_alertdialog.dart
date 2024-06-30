@@ -1,7 +1,7 @@
  import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:flutter/material.dart';
 
- void showSuccessDialog(BuildContext context) {
+ void showSuccessDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -28,15 +28,15 @@ import 'package:flutter/material.dart';
               ),
               SizedBox(height: 8.0),
               Text(
-                'Your item has been added to card successfully',
+                message,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16.0),
               ),
               SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: () {
-                 // Navigator.of(context).pop();
-                  Navigator.pushNamed(context, Routes.rootScreen);
+                  Navigator.of(context).pop();
+                 
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,

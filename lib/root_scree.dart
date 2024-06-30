@@ -1,10 +1,12 @@
 import 'package:e_commerce_app/consts/app_colors.dart';
+import 'package:e_commerce_app/providers/cart_provider.dart';
 import 'package:e_commerce_app/screens/card/card_screen.dart';
 import 'package:e_commerce_app/screens/home/home_screen.dart';
 import 'package:e_commerce_app/screens/profile/profile_screen.dart';
 import 'package:e_commerce_app/screens/search/search_scree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:provider/provider.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -21,7 +23,7 @@ class _RootScreenState extends State<RootScreen> {
     HomeScreen(),
     SearchScreen(),
     CardScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
   void initState() {
     // TODO: implement initState
@@ -32,6 +34,7 @@ class _RootScreenState extends State<RootScreen> {
   }
 
   Widget build(BuildContext context) {
+    final Cartprovider=Provider.of<CartProvider>(context);
     return Scaffold(
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),
@@ -49,24 +52,30 @@ class _RootScreenState extends State<RootScreen> {
             });
             pageController.jumpToPage(value);
           },
-          destinations: const [
-            NavigationDestination(
+          destinations:  [
+            const NavigationDestination(
                 selectedIcon: Icon(IconlyBold.home),
                 icon: Icon(IconlyLight.home),
                 label: "Home"),
-            NavigationDestination(
+            const NavigationDestination(
                 selectedIcon: Icon(IconlyBold.search),
                 icon: Icon(IconlyLight.search),
                 label: "Search"),
-            NavigationDestination(
-                selectedIcon: Icon(IconlyBold.buy),
-                icon: Badge(
+            Cartprovider.getcart.isEmpty
+                ? const NavigationDestination(
+                    selectedIcon: Icon(IconlyBold.buy),
+                    icon: Icon(IconlyLight.buy),
+                    label: "Cart")
+                : NavigationDestination(
+                    selectedIcon: Icon(IconlyBold.buy),
+                    icon:Badge(
                   backgroundColor: Colors.red,
-                  label: const Text('3'),                 
-                  child: Icon(IconlyLight.buy)),
-                label: "Card"
-                ),
-            NavigationDestination(
+                  label: Text(Cartprovider.getcart.length.toString()),                 
+                  child: const Icon(IconlyLight.buy)),
+                    label: "Cart",
+                    
+                  ),
+            const NavigationDestination(
                 selectedIcon: Icon(IconlyBold.profile),
                 icon: Icon(IconlyLight.profile),
                 label: "Profile"),

@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,7 +56,9 @@ class EmptyScreen extends StatelessWidget {
                     backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 1, 160, 54)),
                     foregroundColor: MaterialStateProperty.all(Colors.white),
                   ),
-                  onPressed: (){}, icon: Icon(IconlyLight.buy), label: Text('Shop Now')),
+                  onPressed: (){
+                    Navigator.pushNamed(context, Routes.rootScreen);
+                  }, icon: Icon(IconlyLight.buy), label: Text('Shop Now')),
             )),
       ],
     );

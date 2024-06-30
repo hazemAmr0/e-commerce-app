@@ -23,10 +23,10 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(categoryName);
+    
     final productProvider = Provider.of<ProductProvider>(context);
    List<ProductModel> CategoryList =categoryName==null?productProvider.getProducts: productProvider.productsByCategory(categoryName!); 
-     
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

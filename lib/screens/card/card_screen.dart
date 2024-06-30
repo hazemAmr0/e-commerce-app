@@ -1,7 +1,13 @@
+import 'package:e_commerce_app/models/cart_model.dart';
+import 'package:e_commerce_app/providers/cart_provider.dart';
+import 'package:e_commerce_app/providers/product_provider.dart';
+import 'package:e_commerce_app/screens/card/widgets/cart_item_widget.dart';
 import 'package:e_commerce_app/screens/card/widgets/empty_screen_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class CartItem {
   final String name;
@@ -19,20 +25,23 @@ class CardScreen extends StatefulWidget {
 }
 
 class _CardScreenState extends State<CardScreen> {
-  bool isempty = false;
-  List<CartItem> cartItems = [
-    CartItem(name: 'Nike Air Max 90', price: 220.0),
-    CartItem(name: 'Adidas Ultraboost', price: 180.0),
-    CartItem(name: 'Puma RS-X', price: 150.0),
-    CartItem(name: 'New Balance 990', price: 200.0),
-  ];
+
 
   @override
   Widget build(BuildContext context) {
-    double totalPrice =
-        cartItems.fold(0, (sum, item) => sum + item.price * item.quantity);
+    
+      final cartprovider=Provider.of<CartProvider>(context);
+     final productProvider = Provider.of<ProductProvider>(context);
 
-    return Scaffold(
+
+    return cartprovider.getcart.isEmpty
+        ? const EmptyScreen(
+            img: 'assets/images/emptybox.png',
+            title1: 'Your Cart is Empty',
+            title2: 'Looks like you didn\'t add anything yet',
+            title3: 'Shop Now',
+          )
+        :  Scaffold(
       appBar: AppBar(
         title: Text('My Cart'),
         centerTitle: true,
@@ -43,44 +52,33 @@ class _CardScreenState extends State<CardScreen> {
               color: Colors.red,
             ),
             onPressed: () {
-              setState(() {
-                cartItems.clear();
-                isempty = true;
-              });
+            showRemoveAllItemsDialog(
+              context,
+              cartprovider,
+            
+            );
+
             },
           ),
         ],
       ),
-      body: isempty
-          ? const EmptyScreen(
-              img: 'assets/images/emptybox.png',
-              title1: 'Your Cart is Empty',
-              title2: 'Looks like you didn\'t add anything yet',
-              title3: 'Shop Now',
-            )
-          : SafeArea(
+      body:SafeArea(
               child: Column(
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: cartItems.length,
+                      itemCount:cartprovider.getcart.length,
                       itemBuilder: (context, index) {
-                        return CartItemWidget(
-                          cartItem: cartItems[index],
-                          onQuantityChanged: (newQuantity) {
-                            setState(() {
-                              if (newQuantity > 0) {
-                                cartItems[index].quantity = newQuantity;
-                              } else {
-                                cartItems.removeAt(index);
-                              }
-                            });
-                          },
-                        );
+                        return ChangeNotifierProvider.value(
+                          value: cartprovider.getcart.values.toList().reversed.toList()[index],
+                          child: CartItemWidget());
+                         
                       },
                     ),
                   ),
-                  TotalPriceWidget(totalPrice: totalPrice),
+                TotalPriceWidget(totalPrice: cartprovider.totalAmount(
+                  productProvider: productProvider
+                )),
                 ],
               ),
             ),
@@ -88,65 +86,6 @@ class _CardScreenState extends State<CardScreen> {
   }
 }
 
-class CartItemWidget extends StatelessWidget {
-  final CartItem cartItem;
-  final ValueChanged<int> onQuantityChanged;
-
-  const CartItemWidget({
-    Key? key,
-    required this.cartItem,
-    required this.onQuantityChanged,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ListTile(
-        minVerticalPadding: 35,
-        leading: Image.asset(
-          'assets/images/categories/shoes.png',
-          height: 100,
-        ),
-        title: Text(
-          cartItem.name,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          '\$${cartItem.price.toStringAsFixed(2)}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.green,
-            fontSize: 16,
-          ),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(Icons.remove),
-              onPressed: () {
-                onQuantityChanged(cartItem.quantity - 1);
-              },
-            ),
-            Text(cartItem.quantity.toString()),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                onQuantityChanged(cartItem.quantity + 1);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class TotalPriceWidget extends StatelessWidget {
   final double totalPrice;
@@ -156,10 +95,11 @@ class TotalPriceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartprovider=Provider.of<CartProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
-        height: 100,
+        height: 120,
         decoration: BoxDecoration(
           color: Colors.green[800],
           borderRadius: BorderRadius.circular(10),
@@ -171,14 +111,65 @@ class TotalPriceWidget extends StatelessWidget {
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Total price',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                 RichText(
+                    text: TextSpan(
+                      text: 'No.of product : ',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                     color: Colors.amber
+                      ), // Default text style
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '${cartprovider.getcart.length}',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.amber),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    '\$${totalPrice.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                 RichText(
+                    text: TextSpan(
+                      text: 'No.of items : ',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        color:    Colors.amber,
+                         ), // Default text style
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '${cartprovider.totalItems()}',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.amber),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  RichText(
+                    text: TextSpan(
+                      text: 'Total price : ',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber
+                      ), // Default text style
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '${totalPrice.toStringAsFixed(2)} \$',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.amber),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -212,3 +203,30 @@ class TotalPriceWidget extends StatelessWidget {
     );
   }
 }
+ showRemoveAllItemsDialog(BuildContext context, CartProvider cartprovider) {
+ return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Remove All Items'),
+          content: Text('Are you sure you want to remove all items from your cart?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text('Remove'),
+              onPressed: () {
+                // Code to remove all items from the cart
+                cartprovider.clearCart();
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+ }

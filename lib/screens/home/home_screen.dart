@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:e_commerce_app/consts/styles.dart';
+import 'package:e_commerce_app/providers/product_provider.dart';
 import 'package:e_commerce_app/providers/theme_provider.dart';
 import 'package:e_commerce_app/screens/home/widgets/banner_widget.dart';
 import 'package:e_commerce_app/screens/home/widgets/categories_card.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productprovider=Provider.of<ProductProvider>(context);
     // Build the home screen widget.
     return Scaffold(
       body: SingleChildScrollView(
@@ -65,7 +67,7 @@ class HomeScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(), // Added physics
                 builder: (context, index) {
                   return ItemCard(
-                    productId: 'iphone14-128gb-black',
+                    productId: productprovider.getProducts[index].productId!,
                   );
                 },
               ),
