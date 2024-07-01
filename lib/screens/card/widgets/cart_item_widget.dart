@@ -41,8 +41,9 @@ class CartItemWidget extends StatelessWidget {
           child: ListTile(
             minVerticalPadding: 35,
             leading: Image.network(
+            height: 100,
               getCurrProductById!.productImage!,
-              height: 100,
+              fit: BoxFit.cover,
             ),
             title: Text(
               getCurrProductById.productTitle!,

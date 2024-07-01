@@ -1,4 +1,5 @@
  import 'package:e_commerce_app/consts/routting/routes.dart';
+import 'package:e_commerce_app/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 
  void showSuccessDialog(BuildContext context, String message) {
@@ -53,3 +54,31 @@ import 'package:flutter/material.dart';
     );
   }
 
+showRemoveAllItemsDialog(BuildContext context, CartProvider cartprovider) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Remove All Items'),
+        content:
+            Text('Are you sure you want to remove all items from your cart?'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+          ),
+          TextButton(
+            child: Text('Remove'),
+            onPressed: () {
+              // Code to remove all items from the cart
+              cartprovider.clearCart();
+              Navigator.of(context).pop(); // Close the dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}

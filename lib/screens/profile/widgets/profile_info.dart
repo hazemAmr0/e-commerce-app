@@ -23,7 +23,7 @@ class Profileinfo extends StatelessWidget {
               border: Border.all(color: Colors.black),
               shape: BoxShape.circle,
               image: const DecorationImage(
-                  image: AssetImage('assets/images/bag/shopping_cart.png')),
+                  image: AssetImage('assets/images/profile1.png')),
             ),
           ),
           const SizedBox(width: 10),

@@ -64,23 +64,23 @@ class ProfileScreen extends StatelessWidget {
             },
           ),
           const SizedBox(height: 20),
-          ListTile(
-            trailing: const Icon(Icons.chevron_right),
-            title: Text(
-              'viewed ',
-              style: themeProvider.Isdark_theme
-                  ? TextStyles.font16WhiteBold
-                  : TextStyles.font16BlackBold,
-            ),
-            leading: Image.asset(
-              'assets/images/profile/recent.png',
-              height: 30,
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, Routes.viewed);
-            },
-          ),
-          const SizedBox(height: 20),
+          // ListTile(
+          //   trailing: const Icon(Icons.chevron_right),
+          //   title: Text(
+          //     'viewed ',
+          //     style: themeProvider.Isdark_theme
+          //         ? TextStyles.font16WhiteBold
+          //         : TextStyles.font16BlackBold,
+          //   ),
+          //   leading: Image.asset(
+          //     'assets/images/profile/recent.png',
+          //     height: 30,
+          //   ),
+          //   onTap: () {
+          //     Navigator.pushNamed(context, Routes.viewed);
+          //   },
+          // ),
+         
           ListTile(
             trailing: const Icon(Icons.chevron_right),
             title: Text(
