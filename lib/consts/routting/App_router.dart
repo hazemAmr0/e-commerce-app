@@ -3,8 +3,9 @@ import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:e_commerce_app/root_scree.dart';
 import 'package:e_commerce_app/screens/auth/forget_password.dart';
 import 'package:e_commerce_app/screens/auth/login_screen.dart';
-import 'package:e_commerce_app/screens/auth/signin_Screen.dart';
+import 'package:e_commerce_app/screens/auth/signup_Screen.dart';
 import 'package:e_commerce_app/screens/producdetails/product_details.dart';
+import 'package:e_commerce_app/screens/profile/profile_screen.dart';
 import 'package:e_commerce_app/screens/profile/sections/favoriets.dart';
 import 'package:e_commerce_app/screens/profile/sections/viewed.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,17 @@ class AppRouter {
           case Routes.viewed:
         return MaterialPageRoute(builder: (_) => const Viewed());
          case Routes.login:
-        return MaterialPageRoute(builder: (_) =>  LoginScreen());
+        return MaterialPageRoute(builder: (_) =>  const LoginScreen());
               case Routes.signUp:
         return MaterialPageRoute(builder: (_) => SignUp());
         case Routes.forgetPassword:
-        return MaterialPageRoute(builder: (_) => ForgetPassword());
+        return MaterialPageRoute(builder: (_) => const ForgetPassword());
+        case Routes.profile:
+        return MaterialPageRoute(builder: (_) =>  ProfileScreen());
+        
+
+      
+
 
 
       // Add other cases as needed

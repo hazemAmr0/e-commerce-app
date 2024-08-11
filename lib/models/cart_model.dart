@@ -5,5 +5,6 @@ class CartModel with ChangeNotifier{
   final String cartId;
  final int quantity;
 
-  CartModel(this.cartId, this.quantity, {required this.productId});
+  CartModel({required this.cartId, required this.quantity, required this.productId});
+  
 }

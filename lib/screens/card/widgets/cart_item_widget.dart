@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app/models/cart_model.dart';
 import 'package:e_commerce_app/providers/cart_provider.dart';
 import 'package:e_commerce_app/providers/product_provider.dart';
-import 'package:e_commerce_app/screens/card/card_screen.dart';
 import 'package:e_commerce_app/screens/producdetails/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -37,13 +37,18 @@ class CartItemWidget extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ListTile(
             minVerticalPadding: 35,
-            leading: Image.network(
-            height: 100,
-              getCurrProductById!.productImage!,
-              fit: BoxFit.cover,
+            leading:Hero(
+              tag: cartprovider.productId,
+              child: CachedNetworkImage(
+                height: 50,
+                width: 50,
+                imageUrl: getCurrProductById!.productImage!,
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
             ),
             title: Text(
               getCurrProductById.productTitle!,
@@ -51,8 +56,8 @@ class CartItemWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              '\$${getCurrProductById.productPrice!}',
-              style: TextStyle(
+              '${getCurrProductById.productPrice!} EGP',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.green,
                 fontSize: 16,
@@ -65,7 +70,7 @@ class CartItemWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.remove),
+                      icon: const Icon(Icons.remove),
                       onPressed: () {
                         if (cartprovider.quantity > 1) {
                           cart.updateQuantity(
@@ -79,7 +84,7 @@ class CartItemWidget extends StatelessWidget {
                       cartprovider.quantity.toString(),
                     ),
                     IconButton(
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
                       onPressed: () {
                         cart.updateQuantity(
                           productId: cartprovider.productId,
@@ -98,12 +103,12 @@ class CartItemWidget extends StatelessWidget {
         bottom: 10,
         right: 15,
         child: TextButton(
-          child: Text(
+          child: const Text(
             'Remove',
             style: TextStyle(color: Colors.red),
           ),
           onPressed: () {
-            cart.removeFromCart(productId: cartprovider.productId);
+            cart.removeFromCartFirebase(productId: cartprovider.productId, cartId: cartprovider.cartId, quantity: cartprovider.quantity.toString());
           },
         ),
       ),

@@ -28,20 +28,38 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  cached_network_image: ^3.3.1
   card_swiper: ^3.0.1
+  cloud_firestore: ^5.0.2
   cupertino_icons: ^1.0.6
+  custom_navigation_bar: ^0.8.2
   dynamic_height_grid_view: ^0.0.4
+  firebase_app_check: ^0.3.0+2
+  firebase_auth: ^5.1.1
+  firebase_core: ^3.1.1
+  firebase_storage: ^12.1.0
   flutter:
     sdk: flutter
   flutter_iconly: ^1.0.2
+  flutter_native_splash: ^2.4.0
   flutter_screenutil: ^5.9.3
+  flutter_svg: ^2.0.10+1
   google_fonts: ^6.2.1
+  google_sign_in: ^6.2.1
   image_picker: ^1.1.2
+  lottie: ^3.1.2
   provider: ^6.1.2
   shared_preferences: ^2.2.3
+  shimmer: ^3.0.0
   uuid: ^4.4.0
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^4.0.0
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icon.png"
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
@@ -57,6 +75,7 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/animation/
     - assets/images/
     - assets/images/bag/
     - assets/images/banners/

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Search_Bar extends StatelessWidget {
-  @override
- final TextEditingController searchController;
+  final TextEditingController searchController;
 
   Search_Bar({required this.searchController});
   Widget build(BuildContext context) {

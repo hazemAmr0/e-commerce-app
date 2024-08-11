@@ -1,9 +1,7 @@
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:e_commerce_app/models/product_model.dart';
-import 'package:e_commerce_app/screens/card/widgets/empty_screen_widget.dart';
 import 'package:e_commerce_app/screens/search/widgets/item_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductSearchDelegate extends SearchDelegate<String> {
   final List<ProductModel>

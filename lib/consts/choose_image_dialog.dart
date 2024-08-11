@@ -7,21 +7,21 @@ void showChooseImageDialog({required BuildContext context,required Function onCa
 
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Choose Option"),
+        title: const Text("Choose Option"),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library,color: Colors.amber,),
-                title: Text('Gallery'),
+                leading: const Icon(Icons.photo_library,color: Colors.amber,),
+                title: const Text('Gallery'),
                 onTap: () {
                  onGalleryTap();
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_camera,color: Colors.blue),
-                title: Text('Camera'),
+                leading: const Icon(Icons.photo_camera,color: Colors.blue),
+                title: const Text('Camera'),
                 onTap: () {
                  
                   onCameraTap();
@@ -29,8 +29,8 @@ void showChooseImageDialog({required BuildContext context,required Function onCa
                 },
               ),
               ListTile(
-                leading: Icon(Icons.remove_circle,color: Colors.red ,),
-                title: Text('Remove'),
+                leading: const Icon(Icons.remove_circle,color: Colors.red ,),
+                title: const Text('Remove'),
                 onTap: () {
                   onRemoveTap();
                   Navigator.of(context).pop();

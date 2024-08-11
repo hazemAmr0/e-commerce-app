@@ -1,18 +1,35 @@
 
 import 'package:e_commerce_app/consts/app_colors.dart';
+import 'package:e_commerce_app/screens/auth/services/Auth_sevices.dart';
 import 'package:e_commerce_app/screens/auth/widgets/my_validators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
-class ForgetPassword extends StatelessWidget {
-  ForgetPassword({super.key});
+class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({super.key});
+
+  @override
+  State<ForgetPassword> createState() => _ForgetPasswordState();
+}
+
+class _ForgetPasswordState extends State<ForgetPassword> {
   final _formKey = GlobalKey<FormState>();
+
   final emailController = TextEditingController();
+
   Future<void> _loginFct() async {
-    final isValid = _formKey.currentState!.validate();
+    //final isValid = _formKey.currentState!.validate();
+    AuthServices().resetPassword(emailController.text.trim());
+    showAboutDialog(context: context, children: [
+      const Text('Check your email to reset your password'),
+
+    ]
+    );
+    
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

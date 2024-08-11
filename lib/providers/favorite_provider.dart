@@ -1,31 +1,133 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/models/favorite_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class FavoriteProvider with ChangeNotifier {
-
   Map<String, FavoriteModel> _favoriteItems = {};
+  Map<String, FavoriteModel> get getFavorites => _favoriteItems;
 
-  Map<String, FavoriteModel> get favoriteItems => _favoriteItems;
-  bool  isFavorite(String productId) => _favoriteItems.containsKey(productId);
-
-void addOrRemovefromFavorite( {required String productId}) {
-  if (_favoriteItems.containsKey(productId)) {
-    _favoriteItems.remove(productId);
-  } else {
-    _favoriteItems.putIfAbsent(productId, () => FavoriteModel(
-      id: Uuid().v4(),
-      productId: productId,
-
-    ));
+  bool isProductFavorite({required String productId}) {
+    return _favoriteItems.containsKey(productId);
   }
-  notifyListeners();
-}
 
+  // Firebase
+  final userDB = FirebaseFirestore.instance.collection('users');
+  final auth = FirebaseAuth.instance;
 
-  void clearFavorite() {
-    _favoriteItems.clear(); 
+  Future<void> addToFavoriteFirebase({
+    required String productId,
+    required BuildContext context,
+  }) async {
+    final User? user = auth.currentUser;
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Please login first'),
+        ),
+      );
+      return;
+    }
+    final uid = user.uid;
+    final favoriteId = const Uuid().v4();
+    try {
+      await userDB.doc(uid).update({
+        'favorite': FieldValue.arrayUnion([
+          {'favoriteId': favoriteId, 'productId': productId}
+        ])
+      });
+      print('Favorite added to Firebase.');
+
+      await fetchFavorites(); // Ensure the favorites list is updated after adding
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(e.toString()),
+        ),
+      );
+    }
+  }
+
+  Future<void> fetchFavorites() async {
+    User? user = auth.currentUser;
+    if (user == null) {
+      _favoriteItems.clear();
+      notifyListeners();
+      return;
+    }
+    try {
+      final userDoc = await userDB.doc(user.uid).get();
+      final data = userDoc.data();
+      if (data == null || !data.containsKey("favorite")) {
+        _favoriteItems.clear();
+        notifyListeners();
+        return;
+      }
+
+      final List<dynamic> favoriteItems =
+          data['favorite'] as List<dynamic>;
+      final Map<String, FavoriteModel> loadedFavoriteItems = {};
+
+      for (final item in favoriteItems) {
+        if (item is Map<String, dynamic>) {
+          loadedFavoriteItems.putIfAbsent(
+            item['productId'] as String,
+            () => FavoriteModel(
+              favoriteId: item['favoriteId'],
+              productId: item['productId'],
+            ),
+          );
+        }
+      }
+
+      _favoriteItems = loadedFavoriteItems;
+    } catch (e) {
+      print('Error fetching favorites: $e');
+    }
     notifyListeners();
   }
 
+  Future<void> removeFromFavoriteFirebase({
+    required String productId,
+    required String favoriteId,
+  }) async {
+    final User? user = auth.currentUser;
+    if (user == null) {
+      return;
+    }
+    final uid = user.uid;
+    try {
+      await userDB.doc(uid).update({
+        'favorite': FieldValue.arrayRemove([
+          {'productId': productId, 'favoriteId': favoriteId}
+        ])
+      });
+      print('Favorite removed from Firebase.');
+      await fetchFavorites(); // Ensure the favorites list is updated after removing
+    } catch (e) {
+      print('Error removing favorite: $e');
+    }
+  }
+
+  Future<void> clearFavoritesFirebase() async {
+    final User? user = auth.currentUser;
+    if (user == null) {
+      return;
+    }
+    final uid = user.uid;
+    try {
+      await userDB.doc(uid).update({'favorite': []});
+      print('Favorites cleared from Firebase.');
+      await fetchFavorites(); // Ensure the favorites list is updated after clearing
+    } catch (e) {
+      print('Error clearing favorites: $e');
+    }
+  }
+     void clearLocalFavCart() {
+    _favoriteItems.clear();
+    notifyListeners();
+  }
 }

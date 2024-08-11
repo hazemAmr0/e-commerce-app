@@ -1,23 +1,27 @@
- import 'package:e_commerce_app/consts/routting/routes.dart';
-import 'package:e_commerce_app/providers/cart_provider.dart';
-import 'package:flutter/material.dart';
 
- void showSuccessDialog(BuildContext context, String message) {
-    showDialog(
+
+ import 'package:e_commerce_app/providers/cart_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+
+Future <void> showSuccessDialog(BuildContext context, String message) async{
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return  AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.check_circle,
-                size: 80.0,
-                color: Colors.green,
-              ),
+              Lottie.asset(
+              'assets/animation/done.json',
+              height: 100,
+              width: 100,
+            repeat: false,
+            ),
+            
               SizedBox(height: 16.0),
               Text(
                 'Success!',
@@ -73,7 +77,7 @@ showRemoveAllItemsDialog(BuildContext context, CartProvider cartprovider) {
             child: Text('Remove'),
             onPressed: () {
               // Code to remove all items from the cart
-              cartprovider.clearCart();
+              cartprovider.clearCartFirebase();
               Navigator.of(context).pop(); // Close the dialog
             },
           ),

@@ -12,22 +12,26 @@ class BannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: 180,
       child: Swiper(
+        curve: Curves.fastOutSlowIn,
         autoplay: true,
         itemBuilder: (BuildContext context, int index) {
           return ClipRRect(
+            borderRadius: BorderRadius.circular(16),
             child: Image.asset(
+              
               banners[index],
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ),
           );
         },
         itemCount: banners.length,
         pagination: const SwiperPagination(
-          margin: EdgeInsets.all(10),
+          
           alignment: Alignment.bottomCenter,
           builder: DotSwiperPaginationBuilder(
+
             color: Colors.white,
             activeColor: Colors.red,
           ),

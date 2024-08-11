@@ -1,6 +1,6 @@
-import 'package:e_commerce_app/screens/auth/widgets/build_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+// ignore: camel_case_types
 class buildTopSection extends StatelessWidget {
   const buildTopSection({super.key, required this.context, required this.title});
 final BuildContext context;
@@ -30,7 +30,7 @@ Widget build(BuildContext context) {
                             
                Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30, // Adjust the font size as needed
                   color: Colors.white, // Adjust the text color as needed
                   fontWeight:

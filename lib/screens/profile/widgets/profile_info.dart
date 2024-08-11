@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 class Profileinfo extends StatelessWidget {
   const Profileinfo({
     super.key,
-    required this.themeProvider,
+    required this.themeProvider, required this.name, required this.email, required this.image,
   });
-
+final String name;
+final String email;
+final String image;
   final ThemeProvider themeProvider;
 
   @override
@@ -16,28 +18,26 @@ class Profileinfo extends StatelessWidget {
       padding: const EdgeInsets.only(left: 10),
       child: Row(
         children: [
-          Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              shape: BoxShape.circle,
-              image: const DecorationImage(
-                  image: AssetImage('assets/images/profile1.png')),
-            ),
-          ),
+         SizedBox(
+          height: 60,
+          width: 60,
+           child: ClipRRect(
+             borderRadius: BorderRadius.circular(10.0),
+             child: Image.network(image,fit: BoxFit.cover,),
+             ),
+         ),
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'hazema amr',
+                name,
                 style: themeProvider.Isdark_theme
                     ? TextStyles.font16WhiteBold
                     : TextStyles.font16BlackBold,
               ),
               Text(
-                'hazema amr@gmail.com',
+                email,
                 style: themeProvider.Isdark_theme
                     ? TextStyles.font14GrayRegular
                     : TextStyles.font14blackRegular,

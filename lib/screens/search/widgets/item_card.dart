@@ -1,5 +1,6 @@
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app/consts/app_colors.dart';
-import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:e_commerce_app/consts/seccess_alertdialog.dart';
 import 'package:e_commerce_app/providers/cart_provider.dart';
 import 'package:e_commerce_app/providers/favorite_provider.dart';
@@ -17,11 +18,14 @@ class ItemCard extends StatelessWidget {
   final String productId;
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+
     final themeProvider = Provider.of<ThemeProvider>(context);
     final productProvider = Provider.of<ProductProvider>(context);
     final getCurrProduct = productProvider.productsById(productId);
     final cartProvider = Provider.of<CartProvider>(context);
-     final  favoriteprovider=Provider.of<FavoriteProvider>(context);
+    // ignore: unused_local_variable
+    final favoriteProvider = Provider.of<FavoriteProvider>(context);
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: () {
@@ -33,7 +37,7 @@ class ItemCard extends StatelessWidget {
         );
       },
       child: getCurrProduct == null
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -44,9 +48,9 @@ class ItemCard extends StatelessWidget {
                       : Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
-                    BoxShadow(
-                      blurRadius: 5,
-                      offset: Offset(0, 1),
+                    const BoxShadow(
+                      blurRadius: 1,
+                      //offset: Offset(0, 1),
                     ),
                   ],
                 ),
@@ -58,7 +62,7 @@ class ItemCard extends StatelessWidget {
                         Container(
                           height: 150,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
                             ),
@@ -67,32 +71,59 @@ class ItemCard extends StatelessWidget {
                                 : Colors.blue[50],
                           ),
                           child: Center(
-                              child: Image.network(
-                            getCurrProduct.productImage ?? '',
-                            height: 100,
-                            width: 100,
-                            fit: BoxFit.cover,
-                          )),
+                            child: Hero(
+                              tag: productId,
+                              child: CachedNetworkImage(
+                                imageUrl: getCurrProduct.productImage!,
+                                placeholder: (context, url) => Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white30,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                  ),
+                                  height: 150,
+                                  width: double.infinity,
+                                ), // Show loading indicator
+                                errorWidget: (context, url, error) => const Icon(Icons
+                                    .error), // Show error icon in case of any error
+                                fit: BoxFit.cover, // Adjust the fit as needed
+                              ),
+                            ),
+                          ),
                         ),
                         Positioned(
-                          top: 10,
-                          right: 10,
-                          child:IconButton(
-                            onPressed: () {
-                              favoriteprovider.addOrRemovefromFavorite(
-                                productId: getCurrProduct.productId!
-                              );
-                            },
-                            icon: Icon(
-                              favoriteprovider.isFavorite(
-                               getCurrProduct.productId!,
-                              )
-                                  ? IconlyBold.heart
-                                  : IconlyLight.heart,
-                              color: Colors.red,
-                            ),
-                          )
-                        ),
+                            top: 10,
+                            right: 10,
+                            child: IconButton(
+                              onPressed: () {
+                                if (favoriteProvider.isProductFavorite(
+                                  productId: getCurrProduct.productId!,
+                                )) {
+                                  favoriteProvider.removeFromFavoriteFirebase(
+                                    productId: getCurrProduct.productId!,
+                                    favoriteId: favoriteProvider
+                                        .getFavorites[
+                                            getCurrProduct.productId!]!
+                                        .favoriteId,
+                                  );
+                                } else {
+                                  favoriteProvider.addToFavoriteFirebase(
+                                    context: context,
+                                    productId: getCurrProduct.productId!,
+                                  );
+                                }
+                              },
+                              icon: Icon(
+                                favoriteProvider.isProductFavorite(
+                                  productId: getCurrProduct.productId!,
+                                )
+                                    ? IconlyBold.heart
+                                    : IconlyLight.heart,
+                                color: Colors.red,
+                              ),
+                            )),
                       ],
                     ),
                     Padding(
@@ -101,7 +132,7 @@ class ItemCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            getCurrProduct.productTitle ?? '',
+                             getCurrProduct.productTitle?? '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -112,7 +143,7 @@ class ItemCard extends StatelessWidget {
                           ),
                           SizedBox(height: 5.h),
                           Text(
-                            getCurrProduct.productPrice ?? '',
+                           ' ${getCurrProduct.productPrice} EGP' ?? '',
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: Colors.blue,
@@ -132,7 +163,7 @@ class ItemCard extends StatelessWidget {
                                   color: Colors.amber, size: 11.sp),
                               Icon(Icons.star_border,
                                   color: Colors.amber, size: 11.sp),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
                                 '(3.0)',
                                 style: TextStyle(
@@ -141,29 +172,43 @@ class ItemCard extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
-                                  if(
-                                    cartProvider.IsProductInCart(
-                                        productId: getCurrProduct.productId!)
-                                  ){
-                                    cartProvider
-                                        .removeFromCart(
-                                        productId: getCurrProduct
-                                            .productId!);
-                                    showSuccessDialog(context, 'Product removed from cart');
-                                  }else{
-                                    cartProvider
-                                        .addToCart(
-                                        productId: getCurrProduct
-                                            .productId!);
-                                    showSuccessDialog(context, 'Product added to cart');
-                                  
+                                onPressed: () async {
+                                  if (cartProvider.isProductInCart(
+                                      productId: getCurrProduct.productId!)) {
+                                    cartProvider.removeFromCartFirebase(
+                                      productId: getCurrProduct.productId!,
+                                      cartId: cartProvider
+                                          .getcart[getCurrProduct.productId!]!
+                                          .cartId,
+                                      quantity: cartProvider
+                                          .getcart[getCurrProduct.productId!]!
+                                          .quantity
+                                          .toString(),
+                                    );
+                                    showSuccessDialog(
+                                        context, 'Product removed from cart');
+                                  } else {
+                                    try {
+                                      await cartProvider.addToCartFirebase(
+                                        context: context,
+                                        productId: getCurrProduct.productId!,
+                                        quantity: '1',
+                                      );
+                                      showSuccessDialog(
+                                          context, 'Product added to cart');
+                                    } catch (e) {
+                                      print(e.toString());
+                                    }
                                   }
+                                  // cartProvider
+                                  //     .addToCart(
+                                  //     productId: getCurrProduct
+                                  //         .productId!);
                                 },
-                                icon: cartProvider.IsProductInCart(
+                                icon: cartProvider.isProductInCart(
                                         productId: getCurrProduct.productId!)
-                                    ? Icon(Icons.check_circle)
-                                    : Icon(Icons.add_shopping_cart),
+                                    ? const Icon(Icons.check_circle)
+                                    : const Icon(Icons.add_shopping_cart),
                                 color: Colors.blue,
                               )
                             ],
@@ -177,8 +222,11 @@ class ItemCard extends StatelessWidget {
             ),
     );
   }
-  
-  void showSuccessAlertDialog({required BuildContext context, required String title, required String message}) {
+
+  void showSuccessAlertDialog(
+      {required BuildContext context,
+      required String title,
+      required String message}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -190,7 +238,7 @@ class ItemCard extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );

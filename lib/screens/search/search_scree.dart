@@ -1,19 +1,17 @@
-import 'dart:math';
 
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
-import 'package:e_commerce_app/consts/app_colors.dart';
+import 'package:e_commerce_app/consts/widgets/empty_screen.dart';
+
 import 'package:e_commerce_app/models/product_model.dart';
 import 'package:e_commerce_app/providers/product_provider.dart';
-import 'package:e_commerce_app/providers/theme_provider.dart';
-import 'package:e_commerce_app/screens/card/widgets/empty_screen_widget.dart';
 import 'package:e_commerce_app/screens/search/widgets/item_card.dart';
-import 'package:e_commerce_app/screens/search/widgets/search_bar.dart';
 import 'package:e_commerce_app/screens/search/widgets/search_delegate.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key, this.categoryName,});
 
@@ -44,29 +42,42 @@ class SearchScreen extends StatelessWidget {
         
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
-      body: CategoryList.isEmpty
-          ? EmptyScreen(
+       body: //CategoryList.isEmpty
+          CategoryList.isEmpty?EmptyScreen(
               img: 'assets/images/emptybox.png',
               title1: 'No Products Found',
               title2: 'Please Check Later',
               title3: '',
-            )
-          : SafeArea(
-        child: Column(
-          children: [
-     
-Expanded(
-  child: DynamicHeightGridView(builder: (context,index){
-    return  ItemCard(
-      productId: CategoryList[index].productId??'',
-    );
-    
-   
-  }, itemCount: CategoryList.length, crossAxisCount: 2),
-)
-          ],
-        ),
-      ),
+            ):
+            StreamBuilder<List<ProductModel>>(
+             
+              stream:productProvider.FetchproductsStream() ,
+             builder: (context, snapshot) {
+              if(snapshot.connectionState==ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator(),);
+              }
+              if(snapshot.hasError){
+                return Center(child: Text('Error: ${snapshot.error}'),);
+              }
+              if(snapshot.data==null){
+                return Center(child: Text('No Products Found'),);
+              } 
+              return SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: DynamicHeightGridView(builder: (context,index){
+                        return  ItemCard(
+                                productId: CategoryList[index].productId??'',
+                        );
+                        
+                       
+                      }, itemCount: CategoryList.length, crossAxisCount: 2),
+                    ),
+                  ],
+                ),
+              );}
+            ),
     );
   }
 }

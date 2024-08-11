@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app/consts/app_colors.dart';
-import 'package:e_commerce_app/models/cart_model.dart';
+
 import 'package:e_commerce_app/models/favorite_model.dart';
-import 'package:e_commerce_app/models/product_model.dart';
-import 'package:e_commerce_app/providers/cart_provider.dart';
+
 import 'package:e_commerce_app/providers/favorite_provider.dart';
 import 'package:e_commerce_app/providers/product_provider.dart';
 import 'package:e_commerce_app/providers/theme_provider.dart';
@@ -47,16 +47,25 @@ class FavoriteCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: ListTile(
           minVerticalPadding: 35,
-          leading: Image.network(
-        getCurrProductById!.productImage!,  
-                  ),
+          leading: Hero(
+            tag: cartvaf.productId,
+            child: CachedNetworkImage(
+              height: 50,width: 50,
+              imageUrl: getCurrProductById!.productImage!,
+              placeholder: (context, url) => Center(
+                child: Icon(Icons.photo_rounded),
+              ),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            
+            ),
+          ),
           title: Text(
             getCurrProductById.productTitle!,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
-            '\$${getCurrProductById.productPrice!}',
+            '${getCurrProductById.productPrice!} EGP',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.green,
@@ -70,12 +79,24 @@ class FavoriteCard extends StatelessWidget {
               
               IconButton(
                 onPressed: () {
-                  cart.addOrRemovefromFavorite(
-                      productId: cartvaf.productId);
+                 if(cart.isProductFavorite(productId: cartvaf.productId)){
+                   cart.removeFromFavoriteFirebase(
+                     productId: cartvaf.productId,
+                     favoriteId: cartvaf.favoriteId,
+                   );
+
+                 } else {
+                   cart.addToFavoriteFirebase(
+                     productId: cartvaf.productId,
+                     context: context,
+                   );
+                 }
+
                 },
+                
                 icon: Icon(
-                  cart.isFavorite(
-                   cartvaf.productId,
+                  cart.isProductFavorite(
+                    productId: cartvaf.productId,
                   )
                       ? IconlyBold.heart
                       : IconlyLight.heart,
@@ -87,6 +108,6 @@ class FavoriteCard extends StatelessWidget {
         ),
       ),
     );
-    ;
+    
   }
 }

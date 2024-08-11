@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:e_commerce_app/consts/choose_image_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,10 +24,10 @@ class _PicImageState extends State<PicImage> {
             borderRadius: BorderRadius.circular(10),
             child: widget.pickedImage == null
                 ? Container(
-                   color: Colors.white,
+                   color: Colors.black12,
                     height: 100,
                     width: 100,
-                    child:Icon(Icons.person_outline,size: 100,color: Colors.black,)
+                    child:const Icon(Icons.person_outline,size: 70,color: Colors.white,)
                   )
                 : 
                    Container(
@@ -51,8 +50,8 @@ class _PicImageState extends State<PicImage> {
               onTap: () {
                 widget.onCameraTap();
               },
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
+              child: const Padding(
+                padding: EdgeInsets.all(4.0),
                 child: Icon(
                   Icons.camera_alt,
                   size: 20,

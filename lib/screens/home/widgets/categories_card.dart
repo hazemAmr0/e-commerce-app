@@ -4,8 +4,8 @@ import 'package:e_commerce_app/screens/search/search_scree.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class CategoriesCard extends StatelessWidget {
-  @override
   String? img;
   String? title;
   CategoriesCard({this.img, this.title});

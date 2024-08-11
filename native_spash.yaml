@@ -1,0 +1,8 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: true
+
+  color: "#6991F5"
+  image: "assets/animation/buyit.png"
+  

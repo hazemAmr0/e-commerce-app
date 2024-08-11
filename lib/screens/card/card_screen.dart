@@ -1,17 +1,15 @@
 import 'package:e_commerce_app/consts/seccess_alertdialog.dart';
-import 'package:e_commerce_app/models/cart_model.dart';
+import 'package:e_commerce_app/consts/widgets/empty_screen.dart';
 import 'package:e_commerce_app/providers/cart_provider.dart';
 import 'package:e_commerce_app/providers/product_provider.dart';
 import 'package:e_commerce_app/screens/card/widgets/cart_item_widget.dart';
 import 'package:e_commerce_app/screens/card/widgets/checkout%20widget.dart';
-import 'package:e_commerce_app/screens/card/widgets/empty_screen_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 class CardScreen extends StatefulWidget {
-  CardScreen({Key? key}) : super(key: key);
+  const CardScreen({Key? key}) : super(key: key);
 
   @override
   _CardScreenState createState() => _CardScreenState();
@@ -36,11 +34,11 @@ class _CardScreenState extends State<CardScreen> {
           )
         :  Scaffold(
       appBar: AppBar(
-        title: Text('My Cart'),
+        title: const Text('My Cart'),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.delete,
               color: Colors.red,
             ),
@@ -64,7 +62,7 @@ class _CardScreenState extends State<CardScreen> {
                       itemBuilder: (context, index) {
                         return ChangeNotifierProvider.value(
                           value: cartprovider.getcart.values.toList().reversed.toList()[index],
-                          child: CartItemWidget());
+                          child: const CartItemWidget());
                          
                       },
                     ),

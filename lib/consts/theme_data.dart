@@ -6,7 +6,7 @@ class Style{
 static ThemeData themeData({required bool isDark, required BuildContext context}){
 
   return ThemeData(
-   scaffoldBackgroundColor: isDark ? AppColor.darkScaffoldColor: AppColor.lightScaffoldColor,
+   scaffoldBackgroundColor: isDark ? AppColor.darkScaffoldColor:Color( 0xFFf8f8f8),
     brightness: isDark ? Brightness.dark : Brightness.light,
     cardColor: isDark ? AppColor.black : AppColor.lightCardColor,
     textTheme:  GoogleFonts.ibmPlexSansTextTheme(
