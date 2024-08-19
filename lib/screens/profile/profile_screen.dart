@@ -99,7 +99,9 @@ setState(() {
               'assets/images/bag/order_svg.png',
               height: 30,
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, Routes.orders);
+            },
           ),
           const SizedBox(height: 20),
           ListTile(

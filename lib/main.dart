@@ -3,11 +3,13 @@ import 'package:e_commerce_app/consts/routting/routes.dart';
 import 'package:e_commerce_app/consts/theme_data.dart';
 import 'package:e_commerce_app/providers/cart_provider.dart';
 import 'package:e_commerce_app/providers/favorite_provider.dart';
+import 'package:e_commerce_app/providers/order_provider.dart';
 import 'package:e_commerce_app/providers/product_provider.dart';
 import 'package:e_commerce_app/providers/theme_provider.dart';
 import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/root_scree.dart';
 import 'package:e_commerce_app/screens/auth/login_screen.dart';
+import 'package:e_commerce_app/screens/profile/sections/orders.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => OrderProvider()),
         ChangeNotifierProvider(create: (context) => ProductProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
@@ -51,7 +54,7 @@ class MyApp extends StatelessWidget {
                 );
               } else {
                 bool isLoggedIn = snapshot.data ?? false;
-                home = isLoggedIn ? const RootScreen() : const LoginScreen();
+                home =  isLoggedIn ? const RootScreen() : const LoginScreen();
               }
 
               return ScreenUtilInit(

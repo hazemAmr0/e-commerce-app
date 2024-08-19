@@ -7,6 +7,7 @@ import 'package:e_commerce_app/screens/auth/signup_Screen.dart';
 import 'package:e_commerce_app/screens/producdetails/product_details.dart';
 import 'package:e_commerce_app/screens/profile/profile_screen.dart';
 import 'package:e_commerce_app/screens/profile/sections/favoriets.dart';
+import 'package:e_commerce_app/screens/profile/sections/orders.dart';
 import 'package:e_commerce_app/screens/profile/sections/viewed.dart';
 import 'package:flutter/material.dart';
 
@@ -28,8 +29,9 @@ class AppRouter {
         case Routes.forgetPassword:
         return MaterialPageRoute(builder: (_) => const ForgetPassword());
         case Routes.profile:
-        return MaterialPageRoute(builder: (_) =>  ProfileScreen());
-        
+        return MaterialPageRoute(builder: (_) => const ProfileScreen());
+                case Routes.orders:
+        return MaterialPageRoute(builder: (_) => const OrdersScreen());
 
       
 

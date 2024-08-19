@@ -8,5 +8,6 @@ class Routes {
   static const String forgetPassword= '/forgetPassword';
   static const String splash='/splash';
   static const String profile='/profile';
+  static const String orders='/orders';
 
 }
