@@ -120,9 +120,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                               productId: product.productId!)) {
                             cartProvider.removeFromCartFirebase(
                               cartId: cartProvider
-                                  .getcart[product.productId]!.cartId,
+                                  .getCart[product.productId]!.cartId,
                               quantity: cartProvider
-                                  .getcart[product.productId]!.quantity
+                                  .getCart[product.productId]!.quantity
                                   .toString(),
                               productId: product.productId!,
                             );

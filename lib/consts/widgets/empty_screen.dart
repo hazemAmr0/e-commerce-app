@@ -25,25 +25,25 @@ class EmptyScreen extends StatelessWidget {
           img,
           height: 200,
         ),
-        SizedBox(
+        const SizedBox(
           height: 70,
         ),
         Text(
           title1,
-          style: TextStyle(fontSize: 35),
+          style: const TextStyle(fontSize: 35),
         ),
         Align(
           alignment: Alignment.center,
           child: Text(
             title2,
-            style: TextStyle(fontSize: 20, color: Colors.grey),
+            style: const TextStyle(fontSize: 20, color: Colors.grey),
           ),
         ),
         Text(
           title3,
-          style: TextStyle(fontSize: 20, color: Colors.grey),
+          style: const TextStyle(fontSize: 20, color: Colors.grey),
         ),
-        SizedBox(
+        const SizedBox(
           height: 150,
         ),
         InkWell(
@@ -53,15 +53,15 @@ class EmptyScreen extends StatelessWidget {
               width: 300.w,
               child: TextButton.icon(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromARGB(255, 1, 160, 54)),
-                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                    backgroundColor: WidgetStateProperty.all(
+                        const Color.fromARGB(255, 1, 160, 54)),
+                    foregroundColor: WidgetStateProperty.all(Colors.white),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.rootScreen);
                   },
-                  icon: Icon(IconlyLight.buy),
-                  label: Text('Shop Now')),
+                  icon: const Icon(IconlyLight.buy),
+                  label: const Text('Shop Now')),
             )),
       ],
     );

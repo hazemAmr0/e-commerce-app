@@ -40,7 +40,7 @@ class FavoriteProvider with ChangeNotifier {
       });
       print('Favorite added to Firebase.');
 
-      await fetchFavorites(); // Ensure the favorites list is updated after adding
+       fetchFavoritesStream(); // Ensure the favorites list is updated after adding
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -51,15 +51,13 @@ class FavoriteProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchFavorites() async {
-    User? user = auth.currentUser;
+  Stream<void> fetchFavoritesStream() {
+    final User? user = auth.currentUser;
     if (user == null) {
-      _favoriteItems.clear();
-      notifyListeners();
-      return;
+      return Stream.value(null);
     }
-    try {
-      final userDoc = await userDB.doc(user.uid).get();
+
+    return userDB.doc(user.uid).snapshots().map((userDoc) {
       final data = userDoc.data();
       if (data == null || !data.containsKey("favorite")) {
         _favoriteItems.clear();
@@ -67,8 +65,7 @@ class FavoriteProvider with ChangeNotifier {
         return;
       }
 
-      final List<dynamic> favoriteItems =
-          data['favorite'] as List<dynamic>;
+      final List<dynamic> favoriteItems = data['favorite'] as List<dynamic>;
       final Map<String, FavoriteModel> loadedFavoriteItems = {};
 
       for (final item in favoriteItems) {
@@ -84,12 +81,9 @@ class FavoriteProvider with ChangeNotifier {
       }
 
       _favoriteItems = loadedFavoriteItems;
-    } catch (e) {
-      print('Error fetching favorites: $e');
-    }
-    notifyListeners();
+      notifyListeners();
+    });
   }
-
   Future<void> removeFromFavoriteFirebase({
     required String productId,
     required String favoriteId,
@@ -106,7 +100,7 @@ class FavoriteProvider with ChangeNotifier {
         ])
       });
       print('Favorite removed from Firebase.');
-      await fetchFavorites(); // Ensure the favorites list is updated after removing
+       fetchFavoritesStream(); // Ensure the favorites list is updated after removing
     } catch (e) {
       print('Error removing favorite: $e');
     }
@@ -121,7 +115,7 @@ class FavoriteProvider with ChangeNotifier {
     try {
       await userDB.doc(uid).update({'favorite': []});
       print('Favorites cleared from Firebase.');
-      await fetchFavorites(); // Ensure the favorites list is updated after clearing
+      await fetchFavoritesStream(); // Ensure the favorites list is updated after clearing
     } catch (e) {
       print('Error clearing favorites: $e');
     }

@@ -7,16 +7,56 @@ import 'package:uuid/uuid.dart';
 
 class CartProvider with ChangeNotifier {
   Map<String, CartModel> _cartItems = {};
-  Map<String, CartModel> get getcart => _cartItems;
-
-  bool isProductInCart({required String productId}) {
-    return _cartItems.containsKey(productId);
-  }
+  Map<String, CartModel> get getCart => _cartItems;
 
   // Firebase
   final userDB = FirebaseFirestore.instance.collection('users');
   final auth = FirebaseAuth.instance;
 
+  // Stream to listen to cart changes
+  Stream<List<CartModel>> cartStream() {
+    final User? user = auth.currentUser;
+    if (user == null) {
+      return const Stream
+          .empty(); // Empty stream when the user is not logged in
+    }
+
+    final uid = user.uid;
+    return userDB.doc(uid).snapshots().map((document) {
+      final data = document.data();
+      if (data == null || !data.containsKey('userCart')) {
+        return []; // Return an empty list if there's no cart data
+      }
+
+      final List<dynamic> cartItems = data['userCart'] as List<dynamic>;
+      final List<CartModel> loadedCartItems = [];
+
+      for (final item in cartItems) {
+        if (item is Map<String, dynamic>) {
+          loadedCartItems.add(
+            CartModel(
+              cartId: item['cartId'],
+              productId: item['productId'],
+              quantity:
+                  int.tryParse(item['quantity']) ?? 0, // Safely parse quantity
+            ),
+          );
+        }
+      }
+
+      // Update local cart items
+      _cartItems = {
+        for (var cartItem in loadedCartItems) cartItem.productId: cartItem
+      };
+
+      notifyListeners(); // Notify listeners when cart changes
+      return loadedCartItems;
+    });
+  }
+  bool isProductInCart({required String productId}) {
+    return _cartItems.containsKey(productId);
+  }
+  // Other methods remain unchanged
   Future<void> addToCartFirebase({
     required String productId,
     required BuildContext context,
@@ -41,8 +81,6 @@ class CartProvider with ChangeNotifier {
         ])
       });
       print('Cart added to Firebase.');
-
-      await fetchCart(); // Ensure the cart is updated after adding
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -53,48 +91,11 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchCart() async {
-    User? user = auth.currentUser;
-    if (user == null) {
-      _cartItems.clear();
-      notifyListeners();
-      return;
-    }
-    try {
-      final userDoc = await userDB.doc(user.uid).get();
-      final data = userDoc.data();
-      if (data == null || !data.containsKey("userCart")) {
-        _cartItems.clear();
-        notifyListeners();
-        return;
-      }
-
-      final List<dynamic> cartItems = data['userCart'] as List<dynamic>;
-      final Map<String, CartModel> loadedCartItems = {};
-
-      for (final item in cartItems) {
-        if (item is Map<String, dynamic>) {
-          loadedCartItems.putIfAbsent(
-            item['productId'] as String,
-            () => CartModel(
-              cartId: item['cartId'],
-              productId: item['productId'],
-              // Safely parse 'quantity' from String to int.
-              quantity: int.tryParse(item['quantity']) ??
-                  0, // Provide a default value in case of parsing failure.
-            ),
-          );
-        }
-      }
-
-      _cartItems = loadedCartItems;
-    } catch (e) {
-      print('Error fetching cart: $e');
-    }
-    notifyListeners();
-  }
-
-  Future<void> removeFromCartFirebase({required String productId,required String cartId,required String quantity}) async {
+  Future<void> removeFromCartFirebase({
+    required String productId,
+    required String cartId,
+    required String quantity,
+  }) async {
     final User? user = auth.currentUser;
     if (user == null) {
       return;
@@ -103,14 +104,14 @@ class CartProvider with ChangeNotifier {
     try {
       await userDB.doc(uid).update({
         'userCart': FieldValue.arrayRemove([
-          {'productId': productId,
-            'quantity':   quantity,
+          {
+            'productId': productId,
+            'quantity': quantity,
             'cartId': cartId,
           }
         ])
       });
       print('Cart removed from Firebase.');
-      await fetchCart(); // Ensure the cart is updated after removing
     } catch (e) {
       print('Error removing cart: $e');
     }
@@ -125,29 +126,10 @@ class CartProvider with ChangeNotifier {
     try {
       await userDB.doc(uid).update({'userCart': []});
       print('Cart cleared from Firebase.');
-      await fetchCart(); // Ensure the cart is updated after clearing
     } catch (e) {
       print('Error clearing cart: $e');
     }
   }
-
-  // void addToCart({required String productId}) {
-  //   _CartItems.putIfAbsent(
-  //       productId, () => CartModel(
-  //           cartId: const Uuid().v4(), quantity: 1, productId: productId));
-  //           print('-----------------------------cart added repeatedly--------------------');
-  //   notifyListeners();
-  // }
-
-  // void removeFromCart({required String productId}) {
-  //   _cartItems.remove(productId);
-  //   notifyListeners();
-  // }
-
-  // void clearCart() {
-  //   _cartItems.clear();
-  //   notifyListeners();
-  // }
 
   void updateQuantity({required String productId, required int quantity}) {
     _cartItems.update(
@@ -177,6 +159,7 @@ class CartProvider with ChangeNotifier {
 
     return total;
   }
+
   void clearLocalCart() {
     _cartItems.clear();
     notifyListeners();

@@ -3,7 +3,6 @@ import 'package:e_commerce_app/providers/cart_provider.dart';
 import 'package:e_commerce_app/providers/product_provider.dart';
 import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,7 +46,7 @@ class TotalPriceWidget extends StatelessWidget {
                           color: Colors.amber), // Default text style
                       children: <TextSpan>[
                         TextSpan(
-                          text: '${cartprovider.getcart.length}',
+                          text: '${cartprovider.getCart.length}',
                           style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.normal,
@@ -142,7 +141,7 @@ Future<void> placeOrder({
   final uid = user.uid;
 
   try {
-    for (var cartItem in cartprovider.getcart.values) {
+    for (var cartItem in cartprovider.getCart.values) {
       final orderId = const Uuid().v4();
       final currentProduct = productProvider.productsById(cartItem.productId);
       await FirebaseFirestore.instance

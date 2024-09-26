@@ -143,7 +143,7 @@ class ItemCard extends StatelessWidget {
                           ),
                           SizedBox(height: 5.h),
                           Text(
-                           ' ${getCurrProduct.productPrice} EGP' ?? '',
+                           ' ${getCurrProduct.productPrice} EGP',
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: Colors.blue,
@@ -178,10 +178,10 @@ class ItemCard extends StatelessWidget {
                                     cartProvider.removeFromCartFirebase(
                                       productId: getCurrProduct.productId!,
                                       cartId: cartProvider
-                                          .getcart[getCurrProduct.productId!]!
+                                          .getCart[getCurrProduct.productId!]!
                                           .cartId,
                                       quantity: cartProvider
-                                          .getcart[getCurrProduct.productId!]!
+                                          .getCart[getCurrProduct.productId!]!
                                           .quantity
                                           .toString(),
                                     );

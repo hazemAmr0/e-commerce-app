@@ -3,6 +3,9 @@ flutter_native_splash:
   ios: true
   web: true
 
-  color: "#6991F5"
-  image: "assets/animation/buyit.png"
-  
+  color: "#6991F5"  # Background color of the splash screen
+  image: assets/animation/buyit.png  # Path to your splash screen image
+  android_12:
+    image: assets/animation/buyit.png  # Add support for Android 12
+      # Background color for the icon on Android 12
+    color: "#6991F5"  # Background color for Android 12 splash screen

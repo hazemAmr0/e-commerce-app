@@ -1,6 +1,4 @@
-import 'package:e_commerce_app/providers/cart_provider.dart';
-import 'package:e_commerce_app/providers/favorite_provider.dart';
-import 'package:e_commerce_app/providers/product_provider.dart';
+
 import 'package:e_commerce_app/providers/theme_provider.dart';
 import 'package:e_commerce_app/providers/user_provider.dart';
 import 'package:e_commerce_app/screens/card/card_screen.dart';
@@ -26,22 +24,18 @@ class _MyButtomNavBarState extends State<RootScreen> {
     _fetchData();
   }
   Future<void> _fetchData() async {
-    final productsProvider =
-        Provider.of<ProductProvider>(context, listen: false);
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final wishlistProvider =
-        Provider.of<FavoriteProvider>(context, listen: false);
+    
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     try {
       await Future.wait([
         // productsProvider.fetchProducts(), // Uncomment if needed
         userProvider.fetchUserInfo(),
-        cartProvider.fetchCart(),
+        // cartProvider.(),
       ]);
 
-      // Fetch favorites
-      wishlistProvider.fetchFavorites();
+      
+      
     } catch (error) {
       print(error.toString());
     } finally {

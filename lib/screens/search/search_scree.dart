@@ -38,7 +38,7 @@ class SearchScreen extends StatelessWidget {
     );
   },
 ),
-        title:  Text(categoryName??'Search',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+        title:  Text(categoryName??'Products',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
         
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),

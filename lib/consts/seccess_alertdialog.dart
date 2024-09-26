@@ -22,8 +22,8 @@ Future <void> showSuccessDialog(BuildContext context, String message) async{
             repeat: false,
             ),
             
-              SizedBox(height: 16.0),
-              Text(
+              const SizedBox(height: 16.0),
+              const Text(
                 'Success!',
                 style: TextStyle(
                   fontSize: 24.0,
@@ -31,13 +31,13 @@ Future <void> showSuccessDialog(BuildContext context, String message) async{
                   color: Colors.green,
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16.0),
+                style: const TextStyle(fontSize: 16.0),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -49,7 +49,7 @@ Future <void> showSuccessDialog(BuildContext context, String message) async{
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-                child: Text('OKAY',style: TextStyle(color: Colors.white),),
+                child: const Text('OKAY',style: TextStyle(color: Colors.white),),
               ),
             ],
           ),
@@ -63,18 +63,18 @@ showRemoveAllItemsDialog(BuildContext context, CartProvider cartprovider) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Remove All Items'),
+        title: const Text('Remove All Items'),
         content:
-            Text('Are you sure you want to remove all items from your cart?'),
+            const Text('Are you sure you want to remove all items from your cart?'),
         actions: <Widget>[
           TextButton(
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
             onPressed: () {
               Navigator.of(context).pop(); // Close the dialog
             },
           ),
           TextButton(
-            child: Text('Remove'),
+            child: const Text('Remove'),
             onPressed: () {
               // Code to remove all items from the cart
               cartprovider.clearCartFirebase();
