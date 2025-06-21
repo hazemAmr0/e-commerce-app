@@ -88,5 +88,5 @@ View the full design on Behance:
 
 **Hazem Amr**  
 📧 hazemamr098@gmail.com  
-🔗 [LinkedIn](www.linkedin.com/in/hazem-omar-pablo)  
+🔗 [LinkedIn](https://www.linkedin.com/in/hazem-omar-pablo)  
 💻 [GitHub](https://github.com/hazemamr0)
